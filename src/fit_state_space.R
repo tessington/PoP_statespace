@@ -91,11 +91,51 @@ gamma_est <- get_est(raef, "gamma")
 print(gamma_est)
 
 #### Exrtract population size ####
-ntEst <- get_est(reef, "nt")
-plot(yearlist, ntEst[,1])
+logntEst <- get_est(reef, "lognt")
+plot(yearlist, logntEst[,1])
 
+# make this prettier
+lognt <- tibble(year = yearlist,
+                est = logntEst[,1],
+            est_se  = logntEst[,2]
+)
+
+ggplot(lognt, aes(x = yearlist, y =  exp(est), 
+                 ymin = exp(est - est_se), ymax = exp(est +  est_se))) +
+  geom_line() + geom_ribbon(alpha = 0.4) + 
+  scale_y_continuous(limits = c(0, 4), expand = expansion(mult = c(0, 0.0))) +
+  labs(x = "Year", y = 'Mean Contracaecum Count') + 
+  theme_bw() +
+  theme(
+    plot.background = element_blank()
+    ,panel.grid.major = element_blank()
+    ,panel.grid.minor = element_blank()
+    ,panel.border = element_blank()
+  ) +
+  theme(axis.line = element_line(color = "black")) +
+  theme(axis.text = element_text(size = 12, color = "black")) +
+  theme(axis.title= element_text(size = 12)) 
 #### Extract population growth rate ####
 rtEst <- get_est(reef, "rt")
 
+logrt <- tibble(year = yearlist[-length(yearlist)],
+                est = rtEst[,1],
+                est_se  = rtEst[,2]
+)
 
+ggplot(logrt, aes(x = year, y =  est, 
+                  ymin = est - est_se, ymax = est +  est_se)) +
+  geom_line() + geom_ribbon(alpha = 0.4) + 
+  scale_y_continuous(limits = c(-.21, .21), expand = expansion(mult = c(0, 0.0))) +
+  labs(x = "Year", y = 'Population Growth Rate') + 
+  theme_bw() +
+  theme(
+    plot.background = element_blank()
+    ,panel.grid.major = element_blank()
+    ,panel.grid.minor = element_blank()
+    ,panel.border = element_blank()
+  ) +
+  theme(axis.line = element_line(color = "black")) +
+  theme(axis.text = element_text(size = 12, color = "black")) +
+  theme(axis.title= element_text(size = 12)) 
 

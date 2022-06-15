@@ -52,6 +52,7 @@
     }
     ADREPORT(nt);
     ADREPORT(rt);
+    ADREPORT(lognt);
     
     
     // generate a vector of lognt that align with observations
